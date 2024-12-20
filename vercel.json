@@ -11,9 +11,8 @@
     ],
     "routes": [
     {
-      "src": "/",
-      "dest": "/api/items"
-    } 
-    
+      "src": "/api/items",
+      "dest": "/api/items.js"
+    }
   ]
   }
