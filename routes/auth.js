@@ -65,4 +65,16 @@ router.post('/delete',verifyToken,verifyRole("admin"), async (req, res) => {
     }
 });
 
+
+ router.get('/checkToken',verifyToken,async (req, res) => {
+    try {
+        res.status(200).json({ message: "token verified" });
+        
+    } catch (err) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+
+
 module.exports = router;
