@@ -31,4 +31,9 @@ const userRoutes = require("./routes/userRoutes");
 app.use("/api/users", userRoutes);
 
 // Start server
+
+// drop indexs 
+//const result = await mongoose.connection.db.collection('users').dropIndex('email_1');
+ //       console.log('Index dropped:', result);
+//
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
