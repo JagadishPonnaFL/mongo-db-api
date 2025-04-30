@@ -30,6 +30,9 @@ app.use("/api/items", itemRoutes);
 const userRoutes = require("./routes/userRoutes");
 app.use("/api/users", userRoutes);
 
+const expenseRoutes = require("./routes/expenseRoutes");
+app.use("/api/expenses", expenseRoutes);
+
 // Start server
 
 // drop indexs 
