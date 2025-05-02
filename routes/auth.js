@@ -34,24 +34,31 @@ res1="2nd";
 
 router.post('/login', async (req, res) => {
     try {
-        const { mobile, password } = req.body;
+        const { email, password } = req.body;
 
-        // Check if user exists
-        const user = await User.findOne({ mobile });
-        if (!user) return res.status(400).json({ message: 'Invalid credentials' });
+        // Find the user by email
+        const user = await User.findOne({ email });
+        if (!user) return res.status(404).json({ message: "User not found" });
 
-        // Verify password
+        // Verify the password (assuming you hash passwords)
         const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
-        const payload = {
-            id: user._id,
-            role: user.role,  // Include user role in the payload
-        };
-        // Generate token
-        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.json({ token });
+        if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
+
+        // Generate the JWT token
+        const token = jwt.sign(
+            {
+                id: user._id, // User ID
+                name: user.name, // Include name
+                mobile: user.mobile, // Include email
+                role: user.role, // Include role
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: "1h" } // Token expiration
+        );
+console.log("Token generated:", token); // Debugging
+        res.status(200).json({ token });
     } catch (err) {
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ error: err.message });
     }
 });
 
