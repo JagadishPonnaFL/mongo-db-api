@@ -8,7 +8,17 @@ router.use(verifyToken);
 // CREATE
 router.post("/", async (req, res) => {
   try {
-    const newExpense = new Expense(req.body);
+    // Merge req.body with CreatedBy and CreatedName
+    const expenseData = {
+      ...req.body,
+      CreatedBy: req.user.mobile, // Extracted from the token
+      CreatedName: req.user.name, // Extracted from the token
+    };
+     
+
+    const newExpense = new Expense(expenseData);
+    console.log("New Expense:", newExpense); // Debugging
+
     const savedExpense = await newExpense.save();
     res.status(201).json(savedExpense);
   } catch (err) {
