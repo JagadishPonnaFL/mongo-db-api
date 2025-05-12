@@ -34,10 +34,11 @@ res1="2nd";
 
 router.post('/login', async (req, res) => {
     try {
-        const { email, password } = req.body;
-
+        const { mobile, password } = req.body;
+        console.log("user",mobile);
         // Find the user by email
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ mobile });
+        console.log("user:", user);
         if (!user) return res.status(404).json({ message: "User not found" });
 
         // Verify the password (assuming you hash passwords)
