@@ -16,7 +16,8 @@ const expenseSchema = new mongoose.Schema({
   location: { type: String },
   receipt_url: { type: String },
   CreatedBy: { type: String }, // Ensure this is defined
-  CreatedName: { type: String } // Ensure this is defined
+  CreatedName: { type: String }, // Ensure this is defined
+  CreatedDate: { type: Date, required: true }
 });
 
 // Add auto-increment plugin for the RecordId field

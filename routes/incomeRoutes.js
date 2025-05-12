@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Expense = require("../models/expense");
+const Income = require("../models/Income");
 const verifyToken = require("../middlewares/verifyToken");
 
 router.use(verifyToken);
@@ -9,7 +9,7 @@ router.use(verifyToken);
 router.post("/", async (req, res) => {
   try {
     // Merge req.body with CreatedBy and CreatedName
-    const expenseData = {
+    const incomeData = {
       ...req.body,
       CreatedBy: req.user.mobile, // Extracted from the token
       CreatedName: req.user.name, 
@@ -17,11 +17,11 @@ router.post("/", async (req, res) => {
     };
      
 
-    const newExpense = new Expense(expenseData);
-    console.log("New Expense:", newExpense); // Debugging
+    const newIncome = new Income(incomeData);
+    console.log("New Income:", newIncome); // Debugging
 
-    const savedExpense = await newExpense.save();
-    res.status(201).json(savedExpense);
+    const savedIncome = await newIncome.save();
+    res.status(201).json(savedIncome);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -30,8 +30,8 @@ router.post("/", async (req, res) => {
 // READ ALL
 router.get("/", async (req, res) => {
   try {
-    const expenses = await Expense.find();
-    res.status(200).json(expenses);
+    const incomes = await Income.find();
+    res.status(200).json(incomes);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -40,9 +40,9 @@ router.get("/", async (req, res) => {
 // READ ONE
 router.get("/:id", async (req, res) => {
   try {
-    const expense = await Expense.findById(req.params.id);
-    if (!expense) return res.status(404).json({ message: "Expense not found" });
-    res.status(200).json(expense);
+    const income = await Income.findById(req.params.id);
+    if (!income) return res.status(404).json({ message: "Income not found" });
+    res.status(200).json(income);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -51,11 +51,11 @@ router.get("/:id", async (req, res) => {
 // UPDATE
 router.put("/:id", async (req, res) => {
   try {
-    const updatedExpense = await Expense.findByIdAndUpdate(req.params.id, req.body, {
+    const updatedIncome = await Income.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
-    if (!updatedExpense) return res.status(404).json({ message: "Expense not found" });
-    res.status(200).json(updatedExpense);
+    if (!updatedIncome) return res.status(404).json({ message: "Income not found" });
+    res.status(200).json(updatedIncome);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -64,9 +64,9 @@ router.put("/:id", async (req, res) => {
 // DELETE
 router.delete("/:id", async (req, res) => {
   try {
-    const deletedExpense = await Expense.findByIdAndDelete(req.params.id);
-    if (!deletedExpense) return res.status(404).json({ message: "Expense not found" });
-    res.status(200).json({ message: "Expense deleted successfully" });
+    const deletedIncome = await Income.findByIdAndDelete(req.params.id);
+    if (!deletedIncome) return res.status(404).json({ message: "Income not found" });
+    res.status(200).json({ message: "Income deleted successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

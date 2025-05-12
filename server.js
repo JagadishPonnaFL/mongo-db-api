@@ -14,10 +14,7 @@ app.use(cors());
 // MongoDB Connection
 const dbURI =process.env.MONGO_URI;;
 mongoose
-  .connect(dbURI,{
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
+  .connect(dbURI)
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log(err));
 
@@ -32,6 +29,8 @@ app.use("/api/users", userRoutes);
 
 const expenseRoutes = require("./routes/expenseRoutes");
 app.use("/api/expenses", expenseRoutes);
+const incomeRoutes = require("./routes/incomeRoutes");
+app.use("/api/incomes", incomeRoutes);
 
 // Start server
 
