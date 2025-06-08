@@ -29,9 +29,15 @@ app.use("/api/users", userRoutes);
 
 const expenseRoutes = require("./routes/expenseRoutes");
 app.use("/api/expenses", expenseRoutes);
+
 const incomeRoutes = require("./routes/incomeRoutes");
 app.use("/api/incomes", incomeRoutes);
 
+const typesParentroutes = require("./routes/typesParentRoutes");
+app.use("/api/typesParent", typesParentroutes);
+
+const typesRoutes = require("./routes/typesRoutes");
+app.use("/api/types", typesRoutes);
 // Start server
 
 // drop indexs 
