@@ -48,6 +48,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+// DELETE ALL
 router.delete("/", async (req, res) => {
   try {
     const result = await Type.deleteMany({});
@@ -67,7 +68,6 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-// DELETE ALL
 
 
 module.exports = router;

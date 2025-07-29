@@ -47,6 +47,15 @@ router.put("/:id", async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 });
+// DELETE ALL
+router.delete("/", async (req, res) => {
+  try {
+    const result = await TypesParent.deleteMany({});
+    res.status(200).json({ message: "All parent types deleted successfully", deletedCount: result.deletedCount });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // DELETE
 router.delete("/:id", async (req, res) => {
