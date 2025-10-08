@@ -45,3 +45,5 @@ app.use("/api/types", typesRoutes);
  //       console.log('Index dropped:', result);
 //
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+const { initWhatsApp } = require('./services/whatsapp');
+ 

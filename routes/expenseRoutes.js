@@ -2,9 +2,10 @@ const express = require("express");
 const router = express.Router();
 const Expense = require("../models/expense");
 const verifyToken = require("../middlewares/verifyToken");
-
+const { sendGroupMessage } = require('../services/whatsapp');
+const { formatMessage } =require('../services/utils');
 router.use(verifyToken);
-
+const Group_Name = process.env.WHATSAPP_GROUP_NAME || "5000";
 // CREATE
 router.post("/", async (req, res) => {
   try {
@@ -22,6 +23,23 @@ router.post("/", async (req, res) => {
 
     const savedExpense = await newExpense.save();
     res.status(201).json(savedExpense);
+   const messageFields = [
+  { key: "name", label: "🟢 *Expense*" },
+  { key: "amount", label: "💰 *Amount*" },
+  { key: "type", label: "📂 *Type*" },
+  { key: "subtype", label: "🔖 *Subtype*" },
+  { key: "datetime", label: "🕒 *Date/Time*" },
+  { key: "payment_mode", label: "💳 *Paid by*" },
+  { key: "consumer", label: "👤 *expense For*" },
+  { key: "vendor", label: "🏪 *Paid to*" }
+];
+
+const header = "\n*__New expense added__*\n";
+
+await sendGroupMessage(
+   Group_Name,
+  `${header}\n${formatMessage(savedExpense, messageFields, true)}`
+);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
