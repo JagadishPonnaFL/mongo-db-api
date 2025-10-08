@@ -25,6 +25,7 @@ const client = new Client({
 // 3️⃣ Event: QR code (first-time login)
 client.on('qr', (qr) => {
     console.log('📱 Scan this QR code with WhatsApp mobile:');
+     console.log(qr);
     qrcode.generate(qr, { small: true });; // you can use qrcode-terminal if you want terminal QR
 });
 
