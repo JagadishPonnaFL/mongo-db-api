@@ -10,7 +10,8 @@ const incomeSchema = new mongoose.Schema({
   notes: { type: String },
   createdBy: { type: String }, // Ensure this is defined
   createdName: { type: String }, // Ensure this is defined
-  createdDate: { type: Date }
+  createdDate: { type: Date },
+  isReccuring:{type:Boolean,default:false}
 });
 
 // Add auto-increment plugin for the IncomeId field
