@@ -4,3 +4,5 @@
 data/whatsapp_auth/
 .wwebjs_cache/
 *.html
+logs/api-out-0.log
+logs/api-err-0.log
