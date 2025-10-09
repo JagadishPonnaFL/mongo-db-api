@@ -47,8 +47,9 @@ async function initWhatsApp() {
   // QR — show scannable ASCII QR in the terminal
   client.on('qr', (qr) => {
     console.log('📱 Scan this QR code with WhatsApp mobile (Linked devices → Link a device):');
+    console.log(qr);
     qrcode.generate(qr, { small: true });
-     console.log(qr);
+    
   });
 
   // On authenticated — save session object to MongoDB
