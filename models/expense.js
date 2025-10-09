@@ -11,13 +11,13 @@ const expenseSchema = new mongoose.Schema({
   payment_mode: { type: String, required: true },
   consumer: { type: String, required: true },
   notes: { type: String },
+  recurring: { type: String },
   vendor: { type: String },
   location: { type: String },
   receipt_url: { type: String },
   CreatedBy: { type: String }, // Ensure this is defined
   CreatedName: { type: String }, // Ensure this is defined
-  CreatedDate: { type: Date, required: true },
-  isReccuring:{type:Boolean,default:false}
+  CreatedDate: { type: Date, required: true }
 });
 
 // Add auto-increment plugin for the RecordId field
