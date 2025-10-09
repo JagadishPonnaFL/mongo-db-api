@@ -46,4 +46,16 @@ app.use("/api/types", typesRoutes);
 //
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
 const { initWhatsApp } = require('./services/whatsapp');
+initWhatsApp()
+  .then(client => {
+    console.log("🚀 WhatsApp initialized successfully");
+  })
+  .catch(err => {
+    console.error("❌ WhatsApp init failed:", err);
+  });
+
+  app.get('/Ping', (req, res) => {
+  console.log('💚  ping received at', new Date().toISOString());
+  res.status(200).send('OK');
+});
  
