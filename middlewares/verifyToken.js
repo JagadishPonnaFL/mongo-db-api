@@ -14,7 +14,6 @@ const verifyToken = (req, res, next) => {
       name: decoded.name, // Assuming the token contains the user's name
       mobile: decoded.mobile,
     };
-    console.log("Decoded User:", decoded); // Debugging
     next();
   } catch (err) {
     res.status(403).json({ message: "Forbidden" });
