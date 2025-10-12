@@ -2,9 +2,11 @@ const express = require("express");
 const router = express.Router();
 const Expense = require("../models/expense");
 const verifyToken = require("../middlewares/verifyToken");
+const { sendMessage } = require("../services/whatsapp");
+const {generateExpenseMessage } =require("../services/messageUtils")
 
 router.use(verifyToken);
-
+const WHAPI_GROUP_ID = process.env.WHAPI_GROUP_ID;
 // CREATE
 router.post("/", async (req, res) => {
   try {
@@ -22,6 +24,7 @@ router.post("/", async (req, res) => {
 
     const savedExpense = await newExpense.save();
     res.status(201).json(savedExpense);
+    await sendMessage(WHAPI_GROUP_ID, generateExpenseMessage(savedExpense));
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
