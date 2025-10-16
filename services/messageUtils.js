@@ -1,91 +1,56 @@
 
 
 
-function formatMessage(obj, fields, multiline = true) {
-  const separator = multiline ? "\n" : ", ";
+function generateExpenseMessage(content) {
+  const {
+    name = "N/A",
+    amount = 0,
+    type = "",
+    subtype = "",
+    payment_mode = "",
+    datetime = "",
+  } = content;
+ const fmtDate = (dt) => {
+    if (!dt) return "";
+    const d = new Date(dt);
+    return `${d.getDate()}-${d.toLocaleString("default", {
+      month: "short",
+    })},${d.getHours() % 12 || 12}:${d
+      .getMinutes()
+      .toString()
+      .padStart(2, "0")}${d.getHours() >= 12 ? "am" : "pm"}`;
+  };
+  let msg = `🧾 *${name.trim()}* \n💰 *₹${fmt(amount)}* - *${payment_mode}*\n`;
+  msg += `🛒 ${type}${subtype ? "-" + subtype : ""} \n 🕒 ${fmtDate(datetime)}`;
 
-  return fields
-    .map((field, index) => {
-      const key = field.key || field;
-      const label = field.label || key;
-      let value = obj[key];
-
-      // Format amount and datetime
-      if (key === "amount" && value && value.toString) value = value.toString();
-      if (key === "datetime" && value) value = new Date(value).toLocaleString();      
-
-      // First two fields: normal/bold
-      if (index < 2) {
-        return `${label}: ${value ?? "N/A"}`;
-      }
-
-      // Remaining fields: monospace for smaller appearance
-      return `${label}: ${value ?? "N/A"}`;
-    })
-    .join(separator);
+  return msg;
 }
 
-function generateExpenseMessage(content,summary="") {
-  // Split first two fields and remaining fields
-  const firstTwo = expensezMessageFieldsTelugu.slice(0, 2);
-  const rest = expensezMessageFieldsTelugu.slice(2);
 
-  // Format first two normally
-  const firstTwoText = formatMessage(content, firstTwo);
+async function generateDailyMessage(summary={}){
+ const repeatChar = (char, count) => char.repeat(count);
+  const {dayTotal = 0, monthTotal = 0, personTotals = [] } = summary;
+  const now = new Date();
+  const formatted = `${now.getDate()}-${now.getMonth() + 1}-${now.getFullYear()}`;
+   let msg=`🕒 ${formatted}\n`;
+   let msg1 = `🟩 *ఈ రోజు ఖర్చు- ₹${fmt(dayTotal)}*\n`;
+   let msg3 =`🟩 *ఈ నెల ఖర్చు- ₹${fmt(monthTotal)}*\n`;
+   let line1=`${repeatChar("_",msg3.length-1)}\n`;
+  msg+=msg1+msg3+line1;
 
-  // Format remaining in monospace
-  const restText = '```\n' + formatMessage(content, rest) + '```';
+  for (const p of personTotals) {
+    const paid = fmt(p.paid || 0);
+    const recv = fmt(p.received || 0);
+    const bal = (p.paid || 0) - (p.received || 0);
+    const balTxt = fmt(bal);
+    msg += `\n*${p.name}* : ${paid} - ${recv} = *₹${balTxt}*\n`;
+  }
+  return msg;
 
-  return `${expenseMessageHeader}\n${firstTwoText}\n${restText}\n ${formatExpenseSummary(summary)}`; //
 }
 
-// Header and fields
-const expenseMessageHeader = "*కొత్త ఖర్చు*";
-const expenseMessageFields = [
-  { key: "name", label: "🟢 Expense" },
-  { key: "amount", label: "💰 Amount" },
-  { key: "type", label: "📂 Type" },
-  { key: "subtype", label: "🔖 Subtype" },
-  { key: "datetime", label: "🕒 Date/Time" },
-  { key: "payment_mode", label: "💳 Paid by" },
-  { key: "consumer", label: "👤 expense For" },
-  { key: "vendor", label: "🏪 Paid to" }
-];
-const expensezMessageFieldsTelugu = [
-  { key: "name", label: "🟢 ఖర్చు పేరు" },           // Expense name
-  { key: "amount", label: "💰 ఎంత ఖర్చు" }, // How much was spent
-  { key: "type", label: "📂 ఖర్చు టైపు" },           // Expense type
-  { key: "subtype", label: "🔖 సబ్ టైపు" },        // Subtype
-  { key: "datetime", label: "🕒 డేట్ & టైమ్" },      // Date and Time
-  { key: "payment_mode", label: "💳 డబ్బు ఎలా ఇచ్చారు" }, // How was it paid
-  { key: "consumer", label: "👤 ఎవరి కోసం" },         // For whom
-  { key: "vendor", label: "🏪 ఎవరికిచ్చారు" }         // Paid to whom
-]
-
-
-function formatExpenseSummary(summary) {
-  debugger;
-  if (!summary) return "";
-
-  const { monthTotal = 0, personTotals = [] } = summary;
-
-  // Format numbers to Indian commas (e.g. 12,34,567)
-  const format = (n) =>
+const fmt = (n) =>
     Number(n).toLocaleString("en-IN", { maximumFractionDigits: 2 });
 
-  // Start with month total
-  let output = `ఈ నెల ఖర్చు: ${format(monthTotal)}`;
 
-  // Append each person's paid/received summary
-  for (const p of personTotals) {
-    const name = p.name || "Unknown";
-    const paid = format(p.paid || 0);
-    const received = format(p.received || 0);
-    output += `, ${name}: ${received}/${paid}`;
-  }
-
-  return output;
-}
-
-
-module.exports = { generateExpenseMessage };
+module.exports = { generateExpenseMessage , generateDailyMessage};

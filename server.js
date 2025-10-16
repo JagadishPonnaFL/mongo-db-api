@@ -44,4 +44,7 @@ app.use("/api/types", typesRoutes);
 //const result = await mongoose.connection.db.collection('users').dropIndex('email_1');
  //       console.log('Index dropped:', result);
 //
+require("./services/schedular");
+app.use
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+
