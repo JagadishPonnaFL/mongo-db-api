@@ -38,14 +38,10 @@ app.use("/api/typesParent", typesParentroutes);
 
 const typesRoutes = require("./routes/typesRoutes");
 app.use("/api/types", typesRoutes);
-// Start server
+ 
+const schedulerRoute = require("./routes/schedular");
+app.use("/schedular", schedulerRoute);
 
-// drop indexs 
-//const result = await mongoose.connection.db.collection('users').dropIndex('email_1');
- //       console.log('Index dropped:', result);
-//
-require("./services/schedular");
-app.use
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
 console.log("Current Time:", new Date().toString());
 
