@@ -1,4 +1,6 @@
-const cron = require("node-cron");
+const express = require("express");
+const router = express.Router();
+ 
 const { generateDailyMessage } =require("../services/messageUtils");
 const { sendMessage } = require("../services/whatsapp");
 const {getExpenseAggregates} =require("../services/aggrigates");
@@ -14,9 +16,16 @@ async function sendDailyMessage() {
         })();
 }
 
-// Schedule: second, minute, hour, day of month, month, day of week
- cron.schedule("44 22 * * *", async () => {
-  await sendDailyMessage();
-}, {
-  timezone: "Asia/Kolkata" // Set timezone if needed
+router.get("/run-daily", async (req, res) => {
+  try {
+   await sendDailyMessage();
+     res.status(200).json({ message: "daily schedular run successfully" });
+  
+ } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: err.message });
+  }
 });
+ 
+
+module.exports = router; 
