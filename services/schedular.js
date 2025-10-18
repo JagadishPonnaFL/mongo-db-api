@@ -15,7 +15,7 @@ async function sendDailyMessage() {
 }
 
 // Schedule: second, minute, hour, day of month, month, day of week
- cron.schedule("16 17 * * *", async () => {
+ cron.schedule("0 22 * * *", async () => {
   await sendDailyMessage();
 }, {
   timezone: "Asia/Kolkata" // Set timezone if needed
