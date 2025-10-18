@@ -47,4 +47,5 @@ app.use("/api/types", typesRoutes);
 require("./services/schedular");
 app.use
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+console.log("Current Time:", new Date().toString());
 
