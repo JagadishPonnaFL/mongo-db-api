@@ -16,10 +16,25 @@ async function sendDailyMessage() {
         })();
 }
 
+// used onsole cron-job.org site \ https://console.cron-job.org/jobs/create
+// pjagaidshfl@gm/xxxxxxx@git
+
+
 router.get("/run-daily", async (req, res) => {
   try {
+      res.status(200).json({ message: "daily schedular start successfully" });
    await sendDailyMessage();
-     res.status(200).json({ message: "daily schedular run successfully" });
+   
+  
+ } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+router.get("/ping", async (req, res) => {
+  try {
+   await sendDailyMessage();
+     res.status(200).json({ message: "ping success" });
   
  } catch (err) {
     console.error(err);
